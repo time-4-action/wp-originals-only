@@ -5,7 +5,7 @@ import argparse
 import sys
 
 VARIANT_PATTERN = re.compile(
-    r'^(.+)-(\d+x\d+|scaled|rotated|e\d{10,})(\.[^.]+)$',
+    r'^(.+)-(\d+x\d+|scaled|rotated)(\.[^.]+)$',
     re.IGNORECASE
 )
 
@@ -25,10 +25,6 @@ def copy_originals(src, dst, dry_run=False):
 
     for root, _, files in os.walk(src):
         for filename in files:
-            _, ext = os.path.splitext(filename)
-            if ext.lower() not in IMAGE_EXTENSIONS:
-                continue
-
             if is_variant(filename):
                 skipped += 1
                 print(f"  SKIP  {os.path.relpath(os.path.join(root, filename), src)}")
@@ -61,7 +57,7 @@ class HelpOnErrorParser(argparse.ArgumentParser):
 if __name__ == '__main__':
     parser = HelpOnErrorParser(
         prog='copy_originals',
-        description='Copy only original WordPress images, skipping resized variants.',
+        description='Copy all original WordPress files (images, zips, etc.), skipping resized image variants.',
         epilog=(
             'WordPress generates variants like image-300x200.jpg, image-scaled.jpg,\n'
             'image-rotated.jpg alongside originals. This tool copies only the originals.'
