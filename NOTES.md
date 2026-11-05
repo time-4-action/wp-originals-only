@@ -1,0 +1,1 @@
+  aws s3 sync ./originals s3://patrik-assets/archive/warranty/ --endpoint-url https://fsn1.your-objectstorage.com --region fsn1
